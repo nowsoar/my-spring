@@ -21,10 +21,16 @@ public class ApiTest {
         // beanFactory.registerBeanDefinition("userService", beanDefinition);
         // UserService userService = (UserService) beanFactory.getBean("userService");
         // userService.queryUserInfo();
+        // DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
+        // BeanDefinition beanDefinition = new BeanDefinition(UserService.class);
+        // beanFactory.registerBeanDefinition("userService", beanDefinition);
+        // UserService userService = (UserService) beanFactory.getBean("userService");
+        // userService.queryUserInfo();
+        // 第3章
         DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
         BeanDefinition beanDefinition = new BeanDefinition(UserService.class);
         beanFactory.registerBeanDefinition("userService", beanDefinition);
-        UserService userService = (UserService) beanFactory.getBean("userService");
+        UserService userService = (UserService) beanFactory.getBean("userService", "zkp");
         userService.queryUserInfo();
     }
 }
