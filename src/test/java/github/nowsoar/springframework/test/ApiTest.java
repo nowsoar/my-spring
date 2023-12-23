@@ -7,6 +7,7 @@ import github.nowsoar.springframework.beans.factory.BeanFactory;
 import github.nowsoar.springframework.beans.factory.config.BeanReference;
 import github.nowsoar.springframework.beans.factory.support.DefaultListableBeanFactory;
 import github.nowsoar.springframework.beans.factory.xml.XmlBeanDefinitionReader;
+import github.nowsoar.springframework.context.support.ClassPathXmlApplicationContext;
 import github.nowsoar.springframework.core.io.DefaultResourceLoader;
 import github.nowsoar.springframework.test.bean.UserDao;
 import github.nowsoar.springframework.test.bean.UserService;
@@ -27,12 +28,25 @@ public class ApiTest {
         resourceLoader = new DefaultResourceLoader();
     }
 
+    // @Test
+    // public void test_xml() {
+    //     DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
+    //     XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(beanFactory);
+    //     reader.loadBeanDefinitions("classpath:spring.xml");
+    //     UserService userService = (UserService) beanFactory.getBean("userService", UserService.class);
+    //     userService.queryUserInfo();
+    // }
+
+    @Test
+    public void test_BeanFactoryPostProcessorAndBeanPostProcessor() {
+
+    }
+
     @Test
     public void test_xml() {
-        DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
-        XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(beanFactory);
-        reader.loadBeanDefinitions("classpath:spring.xml");
-        UserService userService = (UserService) beanFactory.getBean("userService", UserService.class);
+        ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext
+                ("classpath:springPostProcessor.xml");
+        UserService userService = applicationContext.getBean("userService", UserService.class);
         userService.queryUserInfo();
     }
 

@@ -10,4 +10,7 @@
         <property name="userDao" ref="userDao"/>
     </bean>
 
+    <bean class="github.nowsoar.springframework.test.common.MyBeanPostProcessor"/>
+    <bean class="github.nowsoar.springframework.test.common.MyBeanFactoryPostProcessor"/>
+
 </beans>

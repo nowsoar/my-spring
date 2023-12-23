@@ -1,5 +1,6 @@
 package github.nowsoar.springframework.beans.factory.config;
 
+import github.nowsoar.springframework.beans.BeansException;
 import github.nowsoar.springframework.beans.factory.BeanFactory;
 
 /**
@@ -9,4 +10,7 @@ import github.nowsoar.springframework.beans.factory.BeanFactory;
  */
 public interface AutowireCapableBeanFactory extends BeanFactory {
 
+    Object applyBeanPostProcessorsBeforeInitialization(Object existingBean, String beanName) throws BeansException;
+
+    Object applyBeanPostProcessorsAfterInitialization(Object existingBean, String beanName) throws BeansException;
 }

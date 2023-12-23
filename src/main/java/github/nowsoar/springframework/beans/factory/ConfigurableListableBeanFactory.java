@@ -13,4 +13,6 @@ import github.nowsoar.springframework.beans.factory.config.ConfigurableBeanFacto
 public interface ConfigurableListableBeanFactory extends ListableBeanFactory, ConfigurableBeanFactory, AutowireCapableBeanFactory {
 
     BeanDefinition getBeanDefinition(String beanName) throws BeansException;
+
+    void preInstantiateSingletons() throws BeansException;
 }
