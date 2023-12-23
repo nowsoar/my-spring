@@ -5,6 +5,7 @@ import github.nowsoar.springframework.beans.factory.BeanFactory;
 import github.nowsoar.springframework.beans.factory.config.BeanDefinition;
 import github.nowsoar.springframework.beans.factory.config.BeanPostProcessor;
 import github.nowsoar.springframework.beans.factory.config.ConfigurableBeanFactory;
+import github.nowsoar.springframework.utils.ClassUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,8 @@ import java.util.List;
 public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry implements ConfigurableBeanFactory {
 
     private final List<BeanPostProcessor> beanPostProcessors = new ArrayList<BeanPostProcessor>();
+
+    private ClassLoader beanClassLoader = ClassUtils.getDefaultClassLoader();
 
     @Override
     public Object getBean(String name) throws BeansException {
@@ -53,5 +56,9 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
 
     public List<BeanPostProcessor> getBeanPostProcessors() {
         return beanPostProcessors;
+    }
+
+    public ClassLoader getBeanClassLoader() {
+        return this.beanClassLoader;
     }
 }

@@ -1,20 +1,25 @@
 package github.nowsoar.springframework.test.bean;
 
-import github.nowsoar.springframework.beans.factory.DisposableBean;
-import github.nowsoar.springframework.beans.factory.InitializingBean;
+import github.nowsoar.springframework.beans.BeansException;
+import github.nowsoar.springframework.beans.factory.*;
+import github.nowsoar.springframework.context.ApplicationContext;
 
 /**
  * @description:
  * @author: ZKP
  * @time: 2023/12/19
  */
-public class UserService implements InitializingBean, DisposableBean {
+public class UserService implements BeanNameAware, BeanClassLoaderAware, ApplicationContextAware, BeanFactoryAware,InitializingBean, DisposableBean {
 
     private String uId;
 
     private UserDao userDao;
 
     private String company;
+
+    private ApplicationContext applicationContext;
+
+    private BeanFactory beanFactory;
 
     public String getCompany() {
         return company;
@@ -63,5 +68,33 @@ public class UserService implements InitializingBean, DisposableBean {
     @Override
     public void afterPropertiesSet() throws Exception {
         System.out.println("执行: UserService.afterPropertiesSet");
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
+    }
+
+    public ApplicationContext getApplicationContext() {
+        return applicationContext;
+    }
+
+    public BeanFactory getBeanFactory() {
+        return beanFactory;
+    }
+
+    @Override
+    public void setBeanClassLoader(ClassLoader classLoader) {
+        System.out.println("ClassLoader: " + classLoader);
+    }
+
+    @Override
+    public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
+        this.beanFactory = beanFactory;
+    }
+
+    @Override
+    public void setBeanName(String name) {
+        System.out.println("Bean Name is: " + name);
     }
 }

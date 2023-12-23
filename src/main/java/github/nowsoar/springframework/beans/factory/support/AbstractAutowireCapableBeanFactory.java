@@ -5,8 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import github.nowsoar.springframework.beans.BeansException;
 import github.nowsoar.springframework.beans.PropertyValue;
 import github.nowsoar.springframework.beans.PropertyValues;
-import github.nowsoar.springframework.beans.factory.DisposableBean;
-import github.nowsoar.springframework.beans.factory.InitializingBean;
+import github.nowsoar.springframework.beans.factory.*;
 import github.nowsoar.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import github.nowsoar.springframework.beans.factory.config.BeanDefinition;
 import github.nowsoar.springframework.beans.factory.config.BeanPostProcessor;
@@ -47,6 +46,17 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
     }
 
     private Object initializeBean(String beanName, Object bean, BeanDefinition beanDefinition) {
+        if (bean instanceof Aware) {
+            if (bean instanceof BeanFactoryAware) {
+                ((BeanFactoryAware) bean).setBeanFactory(this);
+            }
+            if (bean instanceof BeanClassLoaderAware) {
+                ((BeanClassLoaderAware) bean).setBeanClassLoader(getBeanClassLoader());
+            }
+            if (bean instanceof BeanNameAware) {
+                ((BeanNameAware) bean).setBeanName(beanName);
+            }
+        }
         Object wrappedBean = applyBeanPostProcessorsBeforeInitialization(bean, beanName);
         try {
             invokeInitMethods(beanName, wrappedBean, beanDefinition);
