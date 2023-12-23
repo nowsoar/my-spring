@@ -11,6 +11,7 @@ import github.nowsoar.springframework.context.support.ClassPathXmlApplicationCon
 import github.nowsoar.springframework.core.io.DefaultResourceLoader;
 import github.nowsoar.springframework.test.bean.UserDao;
 import github.nowsoar.springframework.test.bean.UserService;
+import github.nowsoar.springframework.test.event.CustomEvent;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -64,6 +65,14 @@ public class ApiTest {
         System.out.println(userService1);
         System.out.println(userService2);
         userService1.queryUserInfo();
+    }
+
+    @Test
+    public void test_event() {
+        ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext
+                ("classpath:spring.xml");
+        applicationContext.publishEvent(new CustomEvent(applicationContext, 192732L, "成功"));
+        applicationContext.registerShutdownHook();
     }
 
     @Test
