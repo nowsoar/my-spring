@@ -51,6 +51,19 @@ public class ApiTest {
         userService.queryUserInfo();
         System.out.println(userService.getApplicationContext());
         System.out.println(userService.getBeanFactory());
+        userService.queryUserInfo();
+    }
+
+    @Test
+    public void test_prototype() {
+        ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext
+                ("classpath:spring.xml");
+        applicationContext.registerShutdownHook();
+        UserService userService1 = applicationContext.getBean("userService", UserService.class);
+        UserService userService2 = applicationContext.getBean("userService", UserService.class);
+        System.out.println(userService1);
+        System.out.println(userService2);
+        userService1.queryUserInfo();
     }
 
     @Test

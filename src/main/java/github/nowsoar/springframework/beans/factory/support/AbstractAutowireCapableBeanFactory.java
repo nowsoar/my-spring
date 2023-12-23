@@ -35,11 +35,16 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
             throw new BeansException("Instantiation of bean failed", e);
         }
         registerDisposableBeanIfNecessary(beanName, bean, beanDefinition);
-        registerSingleton(beanName, bean);
+        if (beanDefinition.isSingleton()) {
+            registerSingleton(beanName, bean);
+        }
         return bean;
     }
 
     private void registerDisposableBeanIfNecessary(String beanName, Object bean, BeanDefinition beanDefinition) {
+        if (!beanDefinition.isSingleton()) {
+            return ;
+        }
         if (bean instanceof DisposableBean || StrUtil.isNotEmpty(beanDefinition.getDestroyMethodName())) {
             registerDisposableBean(beanName, new DisposableBeanAdapter(bean, beanName, beanDefinition));
         }

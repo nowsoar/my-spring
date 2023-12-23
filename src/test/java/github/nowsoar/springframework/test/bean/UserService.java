@@ -13,7 +13,9 @@ public class UserService implements BeanNameAware, BeanClassLoaderAware, Applica
 
     private String uId;
 
-    private UserDao userDao;
+    // private UserDao userDao;
+
+    private IUserDao userDao;
 
     private String company;
 
@@ -52,13 +54,13 @@ public class UserService implements BeanNameAware, BeanClassLoaderAware, Applica
         this.uId = uId;
     }
 
-    public UserDao getUserDao() {
-        return userDao;
-    }
+    // public UserDao getUserDao() {
+    //     return userDao;
+    // }
 
-    public void setUserDao(UserDao userDao) {
-        this.userDao = userDao;
-    }
+    // public void setUserDao(UserDao userDao) {
+    //     this.userDao = userDao;
+    // }
 
     @Override
     public void destroy() throws Exception {
