@@ -1,9 +1,12 @@
 package github.nowsoar.springframework.beans.factory.support;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.StrUtil;
 import github.nowsoar.springframework.beans.BeansException;
 import github.nowsoar.springframework.beans.PropertyValue;
 import github.nowsoar.springframework.beans.PropertyValues;
+import github.nowsoar.springframework.beans.factory.DisposableBean;
+import github.nowsoar.springframework.beans.factory.InitializingBean;
 import github.nowsoar.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import github.nowsoar.springframework.beans.factory.config.BeanDefinition;
 import github.nowsoar.springframework.beans.factory.config.BeanPostProcessor;
@@ -11,6 +14,7 @@ import github.nowsoar.springframework.beans.factory.config.BeanReference;
 import sun.plugin.com.BeanCustomizer;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 
 /**
  * @description:
@@ -31,13 +35,24 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
         } catch (Exception e) {
             throw new BeansException("Instantiation of bean failed", e);
         }
+        registerDisposableBeanIfNecessary(beanName, bean, beanDefinition);
         registerSingleton(beanName, bean);
         return bean;
     }
 
+    private void registerDisposableBeanIfNecessary(String beanName, Object bean, BeanDefinition beanDefinition) {
+        if (bean instanceof DisposableBean || StrUtil.isNotEmpty(beanDefinition.getDestroyMethodName())) {
+            registerDisposableBean(beanName, new DisposableBeanAdapter(bean, beanName, beanDefinition));
+        }
+    }
+
     private Object initializeBean(String beanName, Object bean, BeanDefinition beanDefinition) {
         Object wrappedBean = applyBeanPostProcessorsBeforeInitialization(bean, beanName);
-        invokeInitMethod(bean, wrappedBean, beanDefinition);
+        try {
+            invokeInitMethods(beanName, wrappedBean, beanDefinition);
+        } catch (Exception e) {
+            throw new BeansException("Invocation of init method of bean[" + beanName + "] failed", e);
+        }
         wrappedBean = applyBeanPostProcessorsAfterInitialization(bean, beanName);
         return wrappedBean;
     }
@@ -55,7 +70,20 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
         return result;
     }
 
-    private void invokeInitMethod(Object bean, Object wrappedBean, BeanDefinition beanDefinition) {
+    private void invokeInitMethods(String  beanName, Object bean, BeanDefinition beanDefinition)
+    throws Exception{
+        if (bean instanceof InitializingBean) {
+            ((InitializingBean) bean).afterPropertiesSet();
+        }
+        String initMethodName = beanDefinition.getInitMethodName();
+        if (StrUtil.isNotEmpty(initMethodName)) {
+            Method initMethod = beanDefinition.getBeanClass().getMethod(initMethodName);
+            if (null == initMethod) {
+                throw new BeansException("Could not find an init method name '" +
+                        initMethodName +"' on bean with name '" + beanName +"'");
+            }
+            initMethod.invoke(bean);
+        }
     }
 
     @Override

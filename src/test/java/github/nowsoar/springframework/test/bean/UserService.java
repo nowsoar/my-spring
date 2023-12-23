@@ -1,11 +1,14 @@
 package github.nowsoar.springframework.test.bean;
 
+import github.nowsoar.springframework.beans.factory.DisposableBean;
+import github.nowsoar.springframework.beans.factory.InitializingBean;
+
 /**
  * @description:
  * @author: ZKP
  * @time: 2023/12/19
  */
-public class UserService {
+public class UserService implements InitializingBean, DisposableBean {
 
     private String uId;
 
@@ -50,5 +53,15 @@ public class UserService {
 
     public void setUserDao(UserDao userDao) {
         this.userDao = userDao;
+    }
+
+    @Override
+    public void destroy() throws Exception {
+        System.out.println("执行: UserService.destroy");
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        System.out.println("执行: UserService.afterPropertiesSet");
     }
 }
