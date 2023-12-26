@@ -4,12 +4,14 @@ import github.nowsoar.springframework.beans.BeansException;
 import github.nowsoar.springframework.beans.factory.*;
 import github.nowsoar.springframework.context.ApplicationContext;
 
+import java.util.Random;
+
 /**
  * @description:
  * @author: ZKP
  * @time: 2023/12/19
  */
-public class UserService implements BeanNameAware, BeanClassLoaderAware, ApplicationContextAware, BeanFactoryAware,InitializingBean, DisposableBean {
+public class UserService implements IUserService, BeanNameAware, BeanClassLoaderAware, ApplicationContextAware, BeanFactoryAware,InitializingBean, DisposableBean {
 
     private String uId;
 
@@ -98,5 +100,25 @@ public class UserService implements BeanNameAware, BeanClassLoaderAware, Applica
     @Override
     public void setBeanName(String name) {
         System.out.println("Bean Name is: " + name);
+    }
+
+    @Override
+    public String queryInfo() {
+        try {
+            Thread.sleep(new Random(1).nextInt(100));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return "zkp, 1, 深圳";
+    }
+
+    @Override
+    public String register(String userName) {
+        try {
+            Thread.sleep(new Random(1).nextInt(100));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return "注册用户: " + userName + " success!";
     }
 }
