@@ -23,7 +23,7 @@ public class ApplicationContextAwareProcessor implements BeanPostProcessor {
         if (bean instanceof ApplicationContextAware) {
             ((ApplicationContextAware) bean).setApplicationContext(applicationContext);
         }
-        return null;
+        return bean;
     }
 
     @Override

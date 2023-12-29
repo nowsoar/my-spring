@@ -54,13 +54,21 @@ public class ApiTest {
     }
 
     @Test
-    public void test_aop() throws NoSuchMethodException {
-        AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut("execution(* github.nowsoar.springframework.test.bean.UserService.*(..))");
-        Class<UserService> clazz = UserService.class;
-        Method method = clazz.getDeclaredMethod("queryUserInfo");
-        System.out.println(pointcut.matches(clazz));
-        System.out.println(pointcut.matches(method, clazz));
+    public void test_aop() {
+        ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:spring.xml");
+        IUserService userService = applicationContext.getBean("userService", IUserService.class);
+        applicationContext.getBean("pointcutAdvisor");
+        System.out.println("测试结果: " + userService.queryInfo());
     }
+
+    // @Test
+    // public void test_aop() throws NoSuchMethodException {
+    //     AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut("execution(* github.nowsoar.springframework.test.bean.UserService.*(..))");
+    //     Class<UserService> clazz = UserService.class;
+    //     Method method = clazz.getDeclaredMethod("queryUserInfo");
+    //     System.out.println(pointcut.matches(clazz));
+    //     System.out.println(pointcut.matches(method, clazz));
+    // }
 
     // @Test
     // public void test_proxy_method() {

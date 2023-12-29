@@ -77,7 +77,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
     private void registerBeanPostProcessor(ConfigurableListableBeanFactory beanFactory) {
         Map<String, BeanPostProcessor> beanPostProcessorMap = beanFactory.getBeansOfType(BeanPostProcessor.class);
-        for (BeanPostProcessor beanPostProcessor :beanPostProcessorMap.values()) {
+        for (BeanPostProcessor beanPostProcessor : beanPostProcessorMap.values()) {
             beanFactory.addBeanPostProcessor(beanPostProcessor);
         }
     }
