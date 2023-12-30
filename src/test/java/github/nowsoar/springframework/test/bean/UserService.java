@@ -3,6 +3,7 @@ package github.nowsoar.springframework.test.bean;
 import github.nowsoar.springframework.beans.BeansException;
 import github.nowsoar.springframework.beans.factory.*;
 import github.nowsoar.springframework.context.ApplicationContext;
+import github.nowsoar.springframework.stereotype.Component;
 
 import java.util.Random;
 
@@ -11,9 +12,12 @@ import java.util.Random;
  * @author: ZKP
  * @time: 2023/12/19
  */
+@Component("userService")
 public class UserService implements IUserService, BeanNameAware, BeanClassLoaderAware, ApplicationContextAware, BeanFactoryAware,InitializingBean, DisposableBean {
 
     private String uId;
+
+    private String token;
 
     // private UserDao userDao;
 
@@ -120,5 +124,18 @@ public class UserService implements IUserService, BeanNameAware, BeanClassLoader
             e.printStackTrace();
         }
         return "注册用户: " + userName + " success!";
+    }
+
+    @Override
+    public String toString() {
+        return "UserService#token = {" + token + "}";
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }
