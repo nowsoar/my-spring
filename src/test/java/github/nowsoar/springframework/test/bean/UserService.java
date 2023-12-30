@@ -2,6 +2,8 @@ package github.nowsoar.springframework.test.bean;
 
 import github.nowsoar.springframework.beans.BeansException;
 import github.nowsoar.springframework.beans.factory.*;
+import github.nowsoar.springframework.beans.factory.annotation.Autowired;
+import github.nowsoar.springframework.beans.factory.annotation.Value;
 import github.nowsoar.springframework.context.ApplicationContext;
 import github.nowsoar.springframework.stereotype.Component;
 
@@ -17,11 +19,13 @@ public class UserService implements IUserService, BeanNameAware, BeanClassLoader
 
     private String uId;
 
+    @Value("${token}")
     private String token;
 
-    // private UserDao userDao;
+    @Autowired
+    private UserDao userDao;
 
-    private IUserDao userDao;
+    // private IUserDao userDao;
 
     private String company;
 
@@ -47,9 +51,16 @@ public class UserService implements IUserService, BeanNameAware, BeanClassLoader
 
     private String location;
 
-    public void queryUserInfo() {
-        System.out.println("查询用户信息: " + userDao.queryUserName(uId)
-        +"，" + company + "，" + location);
+    @Override
+    public String queryUserInfo() {
+        // System.out.println("查询用户信息: " + userDao.queryUserName(uId)
+        // +"，" + company + "，" + location);
+        try {
+            Thread.sleep(new Random(1).nextInt(100));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return userDao.queryUserName("1") + "," + token;
     }
 
     public String getuId() {
@@ -75,7 +86,7 @@ public class UserService implements IUserService, BeanNameAware, BeanClassLoader
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        System.out.println("执行: UserService.afterPropertiesSet");
+        // System.out.println("执行: UserService.afterPropertiesSet");
     }
 
     @Override
@@ -93,7 +104,7 @@ public class UserService implements IUserService, BeanNameAware, BeanClassLoader
 
     @Override
     public void setBeanClassLoader(ClassLoader classLoader) {
-        System.out.println("ClassLoader: " + classLoader);
+        // System.out.println("ClassLoader: " + classLoader);
     }
 
     @Override
@@ -103,7 +114,7 @@ public class UserService implements IUserService, BeanNameAware, BeanClassLoader
 
     @Override
     public void setBeanName(String name) {
-        System.out.println("Bean Name is: " + name);
+        // System.out.println("Bean Name is: " + name);
     }
 
     @Override

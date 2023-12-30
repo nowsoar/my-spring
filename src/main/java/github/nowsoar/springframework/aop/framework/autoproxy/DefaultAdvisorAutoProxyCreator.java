@@ -4,6 +4,7 @@ import github.nowsoar.springframework.aop.*;
 import github.nowsoar.springframework.aop.aspectj.AspectJExpressionPointcutAdvisor;
 import github.nowsoar.springframework.aop.framework.ProxyFactory;
 import github.nowsoar.springframework.beans.BeansException;
+import github.nowsoar.springframework.beans.PropertyValues;
 import github.nowsoar.springframework.beans.factory.BeanFactory;
 import github.nowsoar.springframework.beans.factory.BeanFactoryAware;
 import github.nowsoar.springframework.beans.factory.config.InstantiationAwareBeanPostProcessor;
@@ -61,6 +62,11 @@ public class DefaultAdvisorAutoProxyCreator implements InstantiationAwareBeanPos
             return new ProxyFactory(advisedSupport).getProxy();
         }
         return null;
+    }
+
+    @Override
+    public PropertyValues postProcessPropertyValues(PropertyValues pvs, Object bean, String beanName) throws BeansException {
+        return pvs;
     }
 
     private boolean isInfrastructureClass(Class<?> beanClass) {

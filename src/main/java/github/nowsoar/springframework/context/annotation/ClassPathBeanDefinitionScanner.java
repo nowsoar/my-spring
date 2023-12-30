@@ -1,6 +1,7 @@
 package github.nowsoar.springframework.context.annotation;
 
 import cn.hutool.core.util.StrUtil;
+import github.nowsoar.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor;
 import github.nowsoar.springframework.beans.factory.config.BeanDefinition;
 import github.nowsoar.springframework.beans.factory.support.BeanDefinitionRegistry;
 import github.nowsoar.springframework.stereotype.Component;
@@ -31,6 +32,7 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
                 registry.registerBeanDefinition(determineBeanName(beanDefinition), beanDefinition);
             }
         }
+        registry.registerBeanDefinition("github.nowsoar.springframework.context.annotation.internalAutowiredAnnotationProcessor", new BeanDefinition(AutowiredAnnotationBeanPostProcessor.class));
     }
 
     private String determineBeanName(BeanDefinition beanDefinition) {

@@ -9,5 +9,7 @@ public interface IUserService {
 
     String queryInfo();
 
+    String queryUserInfo();
+
     String register(String userName);
 }

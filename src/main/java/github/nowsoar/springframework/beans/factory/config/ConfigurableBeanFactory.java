@@ -1,6 +1,7 @@
 package github.nowsoar.springframework.beans.factory.config;
 
 import github.nowsoar.springframework.beans.factory.HierarchicalBeanFactory;
+import github.nowsoar.springframework.util.StringValueResolver;
 
 /**
  * @description:
@@ -16,4 +17,8 @@ public interface ConfigurableBeanFactory extends HierarchicalBeanFactory, Single
     void addBeanPostProcessor(BeanPostProcessor beanPostProcessor);
 
     void destroySingletons();
+
+    void addEmbeddedValueResolver(StringValueResolver stringValueResolver);
+
+    String resolveEmbeddedValue(String value);
 }
