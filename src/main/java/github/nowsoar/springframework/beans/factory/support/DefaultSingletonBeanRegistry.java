@@ -2,11 +2,13 @@ package github.nowsoar.springframework.beans.factory.support;
 
 import github.nowsoar.springframework.beans.BeansException;
 import github.nowsoar.springframework.beans.factory.DisposableBean;
+import github.nowsoar.springframework.beans.factory.ObjectFactory;
 import github.nowsoar.springframework.beans.factory.config.SingletonBeanRegistry;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @description:
@@ -17,19 +19,45 @@ public class DefaultSingletonBeanRegistry implements SingletonBeanRegistry {
 
     protected static final Object NULL_OBJECT = new Object();
 
-    private Map<String, Object> singletonObjects = new HashMap<>();
+    private Map<String, Object> singletonObjects = new ConcurrentHashMap<>();
+
+    private final Map<String, Object> earlySingletonObjects = new ConcurrentHashMap<>();
+
+    private final Map<String, ObjectFactory<?>> singletonFactories = new ConcurrentHashMap<>();
 
     private final Map<String, DisposableBean> disposableBeans = new HashMap<>();
 
     @Override
     public Object getSingleton(String beanName) {
-        return singletonObjects.get(beanName);
+        Object singletonObject = singletonObjects.get(beanName);
+        if (null == singletonObject) {
+            singletonObject = earlySingletonObjects.get(beanName);
+            if (null == singletonObject) {
+                ObjectFactory<?> singletonFactory = singletonFactories.get(beanName);
+                if (singletonFactory != null) {
+                    singletonObject = singletonFactory.getObject();
+                    earlySingletonObjects.put(beanName, singletonObject);
+                    singletonFactories.remove(beanName);
+                }
+            }
+        }
+        return singletonObject;
     }
 
     @Override
     public void registerSingleton(String beanName, Object singletonObject) {
         singletonObjects.put(beanName, singletonObject);
+        earlySingletonObjects.remove(beanName);
+        singletonFactories.remove(beanName);
     }
+
+    protected void addSingletonFactory(String beanName, ObjectFactory<?> singletonFactory) {
+        if (! this.singletonObjects.containsKey(beanName)) {
+            this.singletonFactories.put(beanName, singletonFactory);
+            this.earlySingletonObjects.remove(beanName);
+        }
+    }
+
     public void registerDisposableBean(String beanName, DisposableBean bean) {
         disposableBeans.put(beanName, bean);
     }

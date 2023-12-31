@@ -14,10 +14,7 @@ import github.nowsoar.springframework.beans.factory.support.DefaultListableBeanF
 import github.nowsoar.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import github.nowsoar.springframework.context.support.ClassPathXmlApplicationContext;
 import github.nowsoar.springframework.core.io.DefaultResourceLoader;
-import github.nowsoar.springframework.test.bean.IUserService;
-import github.nowsoar.springframework.test.bean.UserDao;
-import github.nowsoar.springframework.test.bean.UserService;
-import github.nowsoar.springframework.test.bean.UserServiceInterceptor;
+import github.nowsoar.springframework.test.bean.*;
 import github.nowsoar.springframework.test.event.CustomEvent;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,17 +32,26 @@ public class ApiTest {
 
     private DefaultResourceLoader resourceLoader;
 
-    @Before
-    public void init() {
-        resourceLoader = new DefaultResourceLoader();
-    }
 
     @Test
-    public void test_autoproxy() {
+    public void test_circular() {
         ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:spring.xml");
-        IUserService userService = applicationContext.getBean("userService", IUserService.class);
-        System.out.println("测试结果: " + userService.queryUserInfo());
+        Husband husband = applicationContext.getBean("husband", Husband.class);
+        Wife wife = applicationContext.getBean("wife", Wife.class);
+        System.out.println(husband.queryWife());
+        System.out.println(wife.queryHusband());
     }
+    // @Before
+    // public void init() {
+    //     resourceLoader = new DefaultResourceLoader();
+    // }
+
+    // @Test
+    // public void test_autoproxy() {
+    //     ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:spring.xml");
+    //     IUserService userService = applicationContext.getBean("userService", IUserService.class);
+    //     System.out.println("测试结果: " + userService.queryUserInfo());
+    // }
 
     // @Test
     // public void test_dynamic() {
