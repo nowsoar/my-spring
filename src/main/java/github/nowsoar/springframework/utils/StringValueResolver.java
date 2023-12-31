@@ -1,4 +1,4 @@
-package github.nowsoar.springframework.util;
+package github.nowsoar.springframework.utils;
 
 /**
  * @description:

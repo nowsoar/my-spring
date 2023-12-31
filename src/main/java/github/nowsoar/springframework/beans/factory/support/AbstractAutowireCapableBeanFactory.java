@@ -2,15 +2,18 @@ package github.nowsoar.springframework.beans.factory.support;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.util.TypeUtil;
 import github.nowsoar.springframework.beans.BeansException;
 import github.nowsoar.springframework.beans.PropertyValue;
 import github.nowsoar.springframework.beans.PropertyValues;
 import github.nowsoar.springframework.beans.factory.*;
 import github.nowsoar.springframework.beans.factory.config.*;
+import github.nowsoar.springframework.core.convert.ConversionService;
 import sun.plugin.com.BeanCustomizer;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 
 /**
  * @description:
@@ -196,6 +199,15 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
                 if (value instanceof BeanReference) {
                     BeanReference beanReference = (BeanReference) value;
                     value = getBean(beanReference.getBeanName());
+                } else {
+                    Class<?> sourceType = value.getClass();
+                    Class<?> targetType = (Class<?>) TypeUtil.getFieldType(bean.getClass(), name);
+                    ConversionService conversionService = getConversionService();
+                    if (conversionService != null) {
+                        if (conversionService.canConvert(sourceType, targetType)) {
+                            value = conversionService.convert(value, targetType);
+                        }
+                    }
                 }
                 BeanUtil.setFieldValue(bean, name, value);
             }

@@ -7,7 +7,7 @@ import github.nowsoar.springframework.beans.factory.config.BeanDefinition;
 import github.nowsoar.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import github.nowsoar.springframework.core.io.DefaultResourceLoader;
 import github.nowsoar.springframework.core.io.Resource;
-import github.nowsoar.springframework.util.StringValueResolver;
+import github.nowsoar.springframework.utils.StringValueResolver;
 
 import java.io.IOException;
 import java.util.Properties;

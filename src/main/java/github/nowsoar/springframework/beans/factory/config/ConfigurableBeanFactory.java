@@ -1,7 +1,9 @@
 package github.nowsoar.springframework.beans.factory.config;
 
+import com.sun.istack.internal.Nullable;
 import github.nowsoar.springframework.beans.factory.HierarchicalBeanFactory;
-import github.nowsoar.springframework.util.StringValueResolver;
+import github.nowsoar.springframework.core.convert.ConversionService;
+import github.nowsoar.springframework.utils.StringValueResolver;
 
 /**
  * @description:
@@ -21,4 +23,9 @@ public interface ConfigurableBeanFactory extends HierarchicalBeanFactory, Single
     void addEmbeddedValueResolver(StringValueResolver stringValueResolver);
 
     String resolveEmbeddedValue(String value);
+
+    void setConversionService(ConversionService conversionService);
+
+    @Nullable
+    ConversionService getConversionService();
 }

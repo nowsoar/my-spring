@@ -1,12 +1,12 @@
 package github.nowsoar.springframework.beans.factory.support;
 
 import github.nowsoar.springframework.beans.BeansException;
-import github.nowsoar.springframework.beans.factory.BeanFactory;
 import github.nowsoar.springframework.beans.factory.FactoryBean;
 import github.nowsoar.springframework.beans.factory.config.BeanDefinition;
 import github.nowsoar.springframework.beans.factory.config.BeanPostProcessor;
 import github.nowsoar.springframework.beans.factory.config.ConfigurableBeanFactory;
-import github.nowsoar.springframework.util.StringValueResolver;
+import github.nowsoar.springframework.core.convert.ConversionService;
+import github.nowsoar.springframework.utils.StringValueResolver;
 import github.nowsoar.springframework.utils.ClassUtils;
 
 import java.util.ArrayList;
@@ -24,6 +24,8 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
     private ClassLoader beanClassLoader = ClassUtils.getDefaultClassLoader();
 
     private final List<StringValueResolver> embeddedValueResolvers = new ArrayList<>();
+
+    private ConversionService conversionService;
 
     @Override
     public Object getBean(String name) throws BeansException {
@@ -84,6 +86,16 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
             result = resolver.resolveStringValue(result);
         }
         return result;
+    }
+
+    @Override
+    public void setConversionService(ConversionService conversionService) {
+        this.conversionService = conversionService;
+    }
+
+    @Override
+    public ConversionService getConversionService() {
+        return conversionService;
     }
 
     public List<BeanPostProcessor> getBeanPostProcessors() {
