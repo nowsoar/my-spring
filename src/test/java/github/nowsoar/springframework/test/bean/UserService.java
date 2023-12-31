@@ -60,7 +60,8 @@ public class UserService implements IUserService, BeanNameAware, BeanClassLoader
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return userDao.queryUserName("1") + "," + token;
+        // return userDao.queryUserName("1") + "," + token;
+        return "1, zkp, " + token;
     }
 
     public String getuId() {

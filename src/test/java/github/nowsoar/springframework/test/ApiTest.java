@@ -41,24 +41,39 @@ public class ApiTest {
     }
 
     @Test
-    public void test_dynamic() {
-        UserService userService = new UserService();
-        AdvisedSupport advisedSupport = new AdvisedSupport();
-        advisedSupport.setTargetSource(new TargetSource(userService));
-        advisedSupport.setMethodInterceptor(new UserServiceInterceptor());
-        advisedSupport.setMethodMatcher(new AspectJExpressionPointcut("execution(* github.nowsoar.springframework.test.bean.IUserService.*(..))"));
-        IUserService proxy_jdk = (IUserService) new JdkDynamicAopProxy(advisedSupport).getProxy();
-        System.out.println("测试结果: " + proxy_jdk.queryInfo());
-        IUserService proxy_cglib = (IUserService) new Cglib2AopProxy(advisedSupport).getProxy();
-        System.out.println("测试结果; " + proxy_cglib.queryInfo());
-    }
-
-    @Test
-    public void test_scan() {
+    public void test_autoproxy() {
         ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:spring.xml");
         IUserService userService = applicationContext.getBean("userService", IUserService.class);
         System.out.println("测试结果: " + userService.queryUserInfo());
     }
+
+    // @Test
+    // public void test_dynamic() {
+    //     UserService userService = new UserService();
+    //     AdvisedSupport advisedSupport = new AdvisedSupport();
+    //     advisedSupport.setTargetSource(new TargetSource(userService));
+    //     advisedSupport.setMethodInterceptor(new UserServiceInterceptor());
+    //     advisedSupport.setMethodMatcher(new AspectJExpressionPointcut("execution(* github.nowsoar.springframework.test.bean.IUserService.*(..))"));
+    //     IUserService proxy_jdk = (IUserService) new JdkDynamicAopProxy(advisedSupport).getProxy();
+    //     System.out.println("测试结果: " + proxy_jdk.queryInfo());
+    //     IUserService proxy_cglib = (IUserService) new Cglib2AopProxy(advisedSupport).getProxy();
+    //     System.out.println("测试结果; " + proxy_cglib.queryInfo());
+    // }
+
+    // @Test
+    // public void test_interfaces() {
+    //     System.out.println(UserService.class.getInterfaces()[0]);
+    //     System.out.println(IUserService.class);
+    //     // System.out.println(IUserService.class.getInterfaces()[0]);
+    //     System.out.println(UserServiceInterceptor.class.getInterfaces()[0]);
+    // }
+
+    // @Test
+    // public void test_scan() {
+    //     ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:spring.xml");
+    //     IUserService userService = applicationContext.getBean("userService", IUserService.class);
+    //     System.out.println("测试结果: " + userService.queryUserInfo());
+    // }
 
     // @Test
     // public void test_scan() {

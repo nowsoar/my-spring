@@ -1,5 +1,7 @@
 package github.nowsoar.springframework.aop;
 
+import github.nowsoar.springframework.utils.ClassUtils;
+
 /**
  * @description:
  * @author: ZKP
@@ -18,6 +20,8 @@ public class TargetSource {
     }
 
     public Class<?>[] getTargetClass() {
-        return target.getClass().getInterfaces();
+        Class<?> clazz = target.getClass();
+        clazz = ClassUtils.isCglibProxyClass(clazz) ? clazz.getSuperclass() : clazz;
+        return clazz.getInterfaces();
     }
 }
